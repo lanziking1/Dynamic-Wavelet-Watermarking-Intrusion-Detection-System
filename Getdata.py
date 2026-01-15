@@ -73,7 +73,7 @@ def get_data(time_step):
     db_data = []
     db_y = []
     # Read the dataset
-    DoS_Data = pd.read_csv(r"D:\水印实验\实验2\CAN_LSTM_WaterMarking\data\DoS_dataset.csv")
+    DoS_Data = pd.read_csv(r"file")  # add file here
     DoS_Group = DoS_Data.groupby("CAN ID")
     for name, group in DoS_Group:
         group = group[['Timestamp', 'CAN ID', ' DLC', 'DATA0', 'DATA1', 'DATA2',
