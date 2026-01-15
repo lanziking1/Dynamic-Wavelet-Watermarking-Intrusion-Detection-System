@@ -85,7 +85,7 @@ def get_data(time_step):
             flag = True
             pos1 = None
             for j in range(temp.shape[1]):
-                # 在 get_data() 中调用
+                # Dynamic_Wavelet_Watermarking_Algorithm
                 result = Dynamic_Wavelet_Watermarking_Algorithm(temp[:, j], row=j, feature_label=feature_label, wavelet='haar', l_max=4, l_target=3)
                 new_data, pos1 = embed_elements(temp[:, j].tolist(), result, pos1=pos1, flag=flag)
                 new_data = data_normalization(new_data)
@@ -93,7 +93,7 @@ def get_data(time_step):
                 flag = False
 
             db_data.append(np.array(temp_data).T)
-            # 数据标签处理
+            # Data label processing
             if np.any(group[i - time_step:i, [11]] == 1):
                 db_y.append([1, 0, 1, 0.5, 0])
             else:
@@ -102,7 +102,7 @@ def get_data(time_step):
 
     db_data = np.array(db_data)
     db_y = np.array(db_y)
-    # 数据集打乱
+    # Data set shuffled
     np.random.seed(116)
     np.random.shuffle(db_data)
     np.random.seed(116)
