@@ -3,6 +3,7 @@ import pywt
 import numpy as np
 import pandas as pd
 
+
 def Dynamic_Wavelet_Watermarking_Algorithm(signal, row, feature_label, wavelet='haar', l_max=6, l_target=3):
     best_level = 1
     min_diff = 3
@@ -73,19 +74,19 @@ def get_data(time_step):
     db_data = []
     db_y = []
     # Read the dataset
-    DoS_Data = pd.read_csv(r"file")  # add file here
+    DoS_Data = pd.read_csv(r"  ")# Read the dataset file here
     DoS_Group = DoS_Data.groupby("CAN ID")
     for name, group in DoS_Group:
         group = group[['Timestamp', 'CAN ID', ' DLC', 'DATA0', 'DATA1', 'DATA2',
                        'DATA3', 'DATA4', 'DATA5', 'DATA6', 'DATA7', 'Label']].values
         # print(name)
-        for i in range(time_step, group.shape[0] // 10):
+        for i in range(time_step, group.shape[0]):
             temp = group[i - time_step:i, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
             temp_data = []
             flag = True
             pos1 = None
             for j in range(temp.shape[1]):
-                # Dynamic_Wavelet_Watermarking_Algorithm
+                # Dynamic_Wavelet_Watermarking datasets generate
                 result = Dynamic_Wavelet_Watermarking_Algorithm(temp[:, j], row=j, feature_label=feature_label, wavelet='haar', l_max=4, l_target=3)
                 new_data, pos1 = embed_elements(temp[:, j].tolist(), result, pos1=pos1, flag=flag)
                 new_data = data_normalization(new_data)
@@ -93,7 +94,7 @@ def get_data(time_step):
                 flag = False
 
             db_data.append(np.array(temp_data).T)
-            # Data label processing
+            # Data label process
             if np.any(group[i - time_step:i, [11]] == 1):
                 db_y.append([1, 0, 1, 0.5, 0])
             else:
@@ -102,7 +103,7 @@ def get_data(time_step):
 
     db_data = np.array(db_data)
     db_y = np.array(db_y)
-    # Data set shuffled
+    # Dataset shuffled
     np.random.seed(116)
     np.random.shuffle(db_data)
     np.random.seed(116)
