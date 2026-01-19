@@ -39,7 +39,7 @@ model = Sequential([
     Dropout(0.2),
     Dense(5)
 ])
-model.compile(optimizer=tf.keras.optimizers.Adam(0.001),
+model.compile(optimizer=tf.keras.optimizers.Adam(0.0001),
               loss='mean_squared_error')  # 损失函数用均方误差
 # 加载预训练权重
 checkpoint_save_path = "./checkpoint/GRU.ckpt"
@@ -167,9 +167,5 @@ plt.ylabel('Value')
 
 # 显示图形
 plt.show()
-# Precision: 1.0
-# Recall: 1.0
-# F1 Score: 1.0
-# 全局Accuracy: 1.0
 
-# 用时 0.0001220130937060543
+
