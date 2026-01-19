@@ -51,7 +51,7 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_save_path,
                                                  save_weights_only=True,
                                                  save_best_only=True)
 
-history = model.fit(x_train, y_train, batch_size=2048, epochs=200, validation_data=(x_test, y_test), validation_freq=1,
+history = model.fit(x_train, y_train, batch_size=512, epochs=50, validation_data=(x_test, y_test), validation_freq=1,
                     callbacks=[cp_callback])
 model.summary()
 
@@ -171,4 +171,5 @@ plt.show()
 # Recall: 1.0
 # F1 Score: 1.0
 # 全局Accuracy: 1.0
+
 # 用时 0.0001220130937060543
