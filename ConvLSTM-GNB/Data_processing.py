@@ -29,7 +29,7 @@ def get_data(time_step):
             for j in range(temp.shape[1]):
                 temp_data.append(data_normalization(temp[:, j]))
 
-            sample = np.array(temp_data).T  # (time_step, 10)
+            sample = np.array(temp_data).T  
             db_data.append(sample)
 
             db_label.append(
@@ -44,5 +44,6 @@ def get_data(time_step):
     db_data, db_label = db_data[idx], db_label[idx]
 
     db_data = np.expand_dims(db_data, axis=-1)  # (N, T, 10, 1)
+
 
     return db_data, db_label
