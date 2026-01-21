@@ -17,10 +17,8 @@ LR = 1e-4
 # ================= 获取数据 =================
 X, y = get_data(time_step)
 
-# 论文：预测模型仅用 Normal 训练
 X_pred_train = X[y == 0]
 
-# GNB：再划分训练 / 测试（非常关键）
 X_all_train, X_all_test, y_train_cls, y_test_cls = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
@@ -43,7 +41,7 @@ model = models.Sequential([
         padding='same'
     ),
     layers.Flatten(),
-    layers.Dense(10)   # 预测特征（不是分类）
+    layers.Dense(10)   
 ])
 
 model.compile(
@@ -60,8 +58,6 @@ model.fit(
 )
 
 
-# ================= Prediction Error =================
-# ---- ConvLSTM 推理时间 ----
 start_time = time.time()
 y_pred = model.predict(X_all_test, verbose=0)
 end_time = time.time()
@@ -73,13 +69,12 @@ y_true = X_all_test[:, -1, :, :].reshape(len(X_all_test), -1)
 errors_test = np.mean(np.abs(y_true - y_pred), axis=1)
 
 
-# ---- 训练集误差（用于 GNB 拟合）----
+# ---- 训练集误差----
 y_pred_train = model.predict(X_all_train, verbose=0)
 y_true_train = X_all_train[:, -1, :, :].reshape(len(X_all_train), -1)
 errors_train = np.mean(np.abs(y_true_train - y_pred_train), axis=1)
 
 
-# ================= GNB Classifier (论文 Section III-C) =================
 def gnb_train(errors, labels):
     mu, sigma, prior = {}, {}, {}
     for c in [0, 1]:
@@ -102,10 +97,10 @@ def gnb_predict(errors, mu, sigma, prior):
     return np.array(preds)
 
 
-# ---- 用训练集拟合 GNB（关键修正点）----
+# ---- 用训练集拟合 GNB----
 mu, sigma, prior = gnb_train(errors_train, y_train_cls)
 
-# ---- GNB 推理时间 ----
+# ----推理时间 ----
 start_time = time.time()
 y_pred_cls = gnb_predict(errors_test, mu, sigma, prior)
 end_time = time.time()
@@ -130,3 +125,4 @@ print("\n===== Runtime Performance =====")
 print(f"ConvLSTM inference : {conv_avg_time * 1000:.6f} ms/sample")
 print(f"GNB decision       : {gnb_avg_time * 1000:.6f} ms/sample")
 print(f"Total IDS latency  : {(conv_avg_time + gnb_avg_time) * 1000:.6f} ms/sample")
+
