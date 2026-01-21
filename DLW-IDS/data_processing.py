@@ -12,7 +12,7 @@ def get_feature(signal, feature_label):
     skewness = skew(signal)
     kurtosis_value = kurtosis(signal,
                               fisher=False)
-    # 进行映射,获取卷积之后的信息
+    # 进行映射
     use_signal = [spectral_flatness, mean_value, variance, skewness, kurtosis_value]
     result = convolve(signal=use_signal, kernel=feature_label)
     return result
@@ -34,7 +34,7 @@ def convolve(signal, kernel, stride=2):
     return result
 
 
-# 进行位置嵌入，保证插入的水印信息，不相临,Flag决定是否再次随机确定插入的位置
+# 进行位置嵌入，保证插入的水印信息，不相临
 def embed_elements(data, elements_to_embed, flag=True, pos1=None, pos2=None):
     if flag == True:
         if len(data) < 3:
@@ -96,8 +96,6 @@ def get_data():
             # 进行打标签，如果label为1，就是注入数据相反就是正常数据
             if np.any(group[i - time_step:i, [11]] == 1):
                 db_y.append([1, 0, 1, 0, 1])
-
-
             else:
                 db_y.append([0, 1, 1, 0, 1])
 
@@ -109,10 +107,9 @@ def get_data():
     np.random.shuffle(db_data)
     np.random.seed(116)
     np.random.shuffle(db_y)
-    # 进行维度变化
     print("db_data.shape before reshape:", db_data.shape)
     db_data = np.reshape(db_data, (db_data.shape[0], time_step + 2, db_data.shape[2]))
     print("db_data.shape:", db_data.shape)
     return db_data, db_y
 
-# get_data()
+
