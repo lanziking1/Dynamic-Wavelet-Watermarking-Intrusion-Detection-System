@@ -14,8 +14,8 @@ def get_data(time_step):
     db_data = []
     db_label = []
 
-    #读取数据集文件
-    Read_Data = pd.read_csv(r"  ")
+    #Read the dataset file
+    Read_Data = pd.read_csv(r"  ")      #Add file address
     Data_Group = Read_Data.groupby("CAN ID")
     for name, group in Data_Group:
         group = group[['Timestamp', 'CAN ID', ' DLC',
@@ -47,3 +47,4 @@ def get_data(time_step):
 
 
     return db_data, db_label
+
