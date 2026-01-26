@@ -135,37 +135,10 @@ print("Recall:", recall_macro)
 print("F1 Score:", f1_macro)
 print("全局Accuracy:", accuracy)
 print('用时', use_time / y_test.shape[0])
-# 绘制编码评估指标，将评估指标进行保存，方便评估
-# 获取水印分类结果
-y_pre_masking = y_pre[:, 2:]
-y_real_masking = y_test[:, 2:]
-df1 = pd.DataFrame(y_pre_masking, columns=['pre_a', 'pre_b', 'pre_c'])
-df2 = pd.DataFrame(y_real_masking, columns=['real_a', 'real_b', 'real_c'])
-pd.concat([df1,df2],axis=1).to_csv('result.csv')
-# 创建一个新的图形
-plt.figure()
-# 设置一个颜色，例如红色
-color = 'red'
-# 循环遍历数组的每一列，并绘制它，但使用不同的线型
-for i, column in enumerate(y_pre_masking.T):  # 使用.T转置数组以按列迭代
-    linestyle = ['-', '--', ':'][i]  # 为每条线选择不同的线型
-    plt.plot(column, label=f'Column {i + 1}', color=color, linestyle=linestyle)
 
-# 设置一个颜色，例如红色
-color = 'yellow'
-# 循环遍历数组的每一列，并绘制它，但使用不同的线型
-for i, column in enumerate(y_real_masking.T):  # 使用.T转置数组以按列迭代
-    linestyle = ['-', '--', ':'][i]  # 为每条线选择不同的线型
-    plt.plot(column, label=f'Column {i + 1}', color=color, linestyle=linestyle)
-# 设置图例
-plt.legend()
 
-# 设置标题和坐标轴标签（可选）
-plt.title('Real Label of Marking')
-plt.xlabel('Index')
-plt.ylabel('Value')
 
-# 显示图形
-plt.show()
+
+
 
 
