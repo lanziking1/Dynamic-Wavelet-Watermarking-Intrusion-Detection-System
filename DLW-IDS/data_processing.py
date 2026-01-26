@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kurtosis, skew
 
-# 提取特征
+# Extract features
 def get_feature(signal, feature_label):
     spectral_flatness = np.std(signal) / np.abs(np.mean(signal)) if np.abs(np.mean(signal)) != 0 else 0
     # 计算均值、方差、偏度和峰度
@@ -12,7 +12,7 @@ def get_feature(signal, feature_label):
     skewness = skew(signal)
     kurtosis_value = kurtosis(signal,
                               fisher=False)
-    # 进行映射
+
     use_signal = [spectral_flatness, mean_value, variance, skewness, kurtosis_value]
     result = convolve(signal=use_signal, kernel=feature_label)
     return result
@@ -111,5 +111,6 @@ def get_data():
     db_data = np.reshape(db_data, (db_data.shape[0], time_step + 2, db_data.shape[2]))
     print("db_data.shape:", db_data.shape)
     return db_data, db_y
+
 
 
