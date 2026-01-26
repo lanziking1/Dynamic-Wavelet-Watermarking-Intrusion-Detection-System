@@ -7,14 +7,14 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from data_processing import get_data
 
 
-# ================= 参数 =================
+# ================= Parameter =================
 time_step = 12
 EPOCHS = 50
 BATCH_SIZE = 512
 LR = 1e-4
 
 
-# ================= 获取数据 =================
+# =================Getting data =================
 X, y = get_data(time_step)
 
 X_pred_train = X[y == 0]
@@ -24,7 +24,7 @@ X_all_train, X_all_test, y_train_cls, y_test_cls = train_test_split(
 )
 
 
-# ================= ConvLSTM 预测模型 =================
+# ================= ConvLSTM  =================
 model = models.Sequential([
     layers.ConvLSTM1D(
         filters=8,
@@ -69,7 +69,6 @@ y_true = X_all_test[:, -1, :, :].reshape(len(X_all_test), -1)
 errors_test = np.mean(np.abs(y_true - y_pred), axis=1)
 
 
-# ---- 训练集误差----
 y_pred_train = model.predict(X_all_train, verbose=0)
 y_true_train = X_all_train[:, -1, :, :].reshape(len(X_all_train), -1)
 errors_train = np.mean(np.abs(y_true_train - y_pred_train), axis=1)
@@ -97,10 +96,10 @@ def gnb_predict(errors, mu, sigma, prior):
     return np.array(preds)
 
 
-# ---- 用训练集拟合 GNB----
+
 mu, sigma, prior = gnb_train(errors_train, y_train_cls)
 
-# ----推理时间 ----
+
 start_time = time.time()
 y_pred_cls = gnb_predict(errors_test, mu, sigma, prior)
 end_time = time.time()
@@ -125,4 +124,5 @@ print("\n===== Runtime Performance =====")
 print(f"ConvLSTM inference : {conv_avg_time * 1000:.6f} ms/sample")
 print(f"GNB decision       : {gnb_avg_time * 1000:.6f} ms/sample")
 print(f"Total IDS latency  : {(conv_avg_time + gnb_avg_time) * 1000:.6f} ms/sample")
+
 
